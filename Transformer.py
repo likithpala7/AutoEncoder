@@ -7,17 +7,17 @@ class Encoder(nn.Module):
     def __init__(self) -> None:
         super().__init__()
         self.model = nn.Sequential(
-            nn.Conv2d(3, 64, (3, 3), padding_mode="same"),
+            nn.Conv2d(3, 64, (3, 3), padding="same"),
             nn.ReLU(),
-            nn.MaxPool2d((2, 2), padding="same"),
-            nn.Conv2d(64, 64, (4, 4), padding_mode="same"),
+            nn.MaxPool2d((2, 2), padding=1),
+            nn.Conv2d(64, 64, (3, 3), padding="same"),
             nn.ReLU(),
-            nn.MaxPool2d((2, 2), padding="same"),
-            nn.Conv2d(64, 32, (3, 3), padding_mode="same"),
+            nn.MaxPool2d((2, 2), padding=1),
+            nn.Conv2d(64, 32, (3, 3), padding="same"),
             nn.ReLU(),
-            nn.MaxPool2d((2, 2), padding="same"),
-            nn.Flatten(),
-            nn.Linear(32*32*32, 512)
+            nn.MaxPool2d((2, 2), padding=1),
+            nn.Flatten(0),
+            nn.Linear(32*5*5, 512)
         )
 
     def forward(self, x):
