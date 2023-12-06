@@ -5,10 +5,12 @@ import os
 
 data_dir = 'cifar-10-batches-py'
 
+
 def unpickle(file):
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
     return dict
+
 
 def concatenate_data(path):
     data = []
@@ -32,9 +34,23 @@ def concatenate_data(path):
     reshaped_data = reshaped_data.reshape(50000, 32, 32, 3).astype(int)
     return reshaped_data, labels.flatten()
 
+
 data, labels = concatenate_data(data_dir)
 
 with open(os.path.join(data_dir, 'batches.meta'), 'rb') as f:
     meta_data = pickle.load(f, encoding='bytes')
     label_names = meta_data[b'label_names']
 
+
+def DataBatch(data, label, batchsize, shuffle=True):
+    # provides a generator for batches of data that yields
+    # data (batchsize, 3, 32, 32) and labels (batchsize)
+    # if shuffle, it will load batches in a random order
+    n = data.shape[0]
+    if shuffle:
+        index = np.random.permutation(n)
+    else:
+        index = np.arange(n)
+    for i in range(int(np.ceil(n/batchsize))):
+        inds = index[i*batchsize: min(n, (i+1)*batchsize)]
+        yield data[inds], label[inds]
