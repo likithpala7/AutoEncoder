@@ -2,6 +2,9 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 import os
+import torch.nn as nn
+import torch.nn.functional as F
+import torch
 
 data_dir = 'cifar-10-batches-py'
 
@@ -41,7 +44,7 @@ with open(os.path.join(data_dir, 'batches.meta'), 'rb') as f:
     meta_data = pickle.load(f, encoding='bytes')
     label_names = meta_data[b'label_names']
 
-
+# taken from Ben Ochoa CSE 252 assignment
 def DataBatch(data, label, batchsize, shuffle=True):
     # provides a generator for batches of data that yields
     # data (batchsize, 3, 32, 32) and labels (batchsize)
@@ -53,4 +56,4 @@ def DataBatch(data, label, batchsize, shuffle=True):
         index = np.arange(n)
     for i in range(int(np.ceil(n/batchsize))):
         inds = index[i*batchsize: min(n, (i+1)*batchsize)]
-        yield data[inds], label[inds]
+        yield torch.from_numpy(data[inds]), torch.from_numpy(label[inds])
