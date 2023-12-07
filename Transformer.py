@@ -29,7 +29,7 @@ class Decoder(nn.Module):
     def __init__(self) -> None:
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(2048),
+            nn.Linear(512, 2048),
             nn.Unflatten(1, (8, 8, 32)),
             nn.Conv2d(32, 32, (3, 3), padding='same'),
             nn.ReLU(),
