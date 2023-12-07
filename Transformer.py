@@ -23,3 +23,27 @@ class Encoder(nn.Module):
     def forward(self, x):
         x = self.model(x)
         return x
+
+
+class Decoder(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.model = nn.Sequential(
+            nn.Linear(2048),
+            nn.Unflatten(1, (8, 8, 32)),
+            nn.Conv2d(32, 32, (3, 3), padding='same'),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=(2, 2)),
+            nn.Conv2d(32, 64, (3, 3), padding='same'),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=(2, 2)),
+            nn.Conv2d(64, 64, (3, 3), padding='same'),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=(2, 2)),
+            nn.Conv2d(64, 3, (3, 3), padding='same'),
+            nn.ReLU()
+        )
+
+    def forward(self, x):
+        x = self.model(x)
+        return x
