@@ -38,7 +38,8 @@ optimizer = torch.optim.Adam(ae.parameters(), lr=1e-3, weight_decay=1e-6)
 loss_fn = nn.MSELoss()
 
 batchsize = 128
-epochs = 5
+epochs = 10
+losses = []
 for epoch in range(epochs):
     for train_x, _ in tqdm(DataBatch(data, labels, batchsize), total=len(data)//batchsize):
         train_x = train_x.to(device)
@@ -47,4 +48,10 @@ for epoch in range(epochs):
         loss = loss_fn(output, train_x)
         loss.backward()
         optimizer.step()
+        losses.append(loss.item())
     print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch+1, epochs, loss.item()))
+
+plt.plot(losses)
+plt.show()
+
+torch.save(ae.state_dict(), 'autoencoder.pth')
