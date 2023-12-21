@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 from DataLoader import DataBatch, concatenate_data
-from Transformer import AutoEncoder
+from AutoEncoder import AutoEncoder
 import os
 import pickle
 import matplotlib.pyplot as plt

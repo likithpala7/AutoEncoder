@@ -4,7 +4,7 @@ from DataLoader import concatenate_data
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
-from Transformer import AutoEncoder
+from AutoEncoder import AutoEncoder
 
 device = (
     "cuda"
